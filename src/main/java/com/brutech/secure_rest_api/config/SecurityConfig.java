@@ -3,6 +3,7 @@ package com.brutech.secure_rest_api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,6 +32,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET,"/account/**").hasAnyAuthority("ADMIN", "USER");
+                    auth.requestMatchers(HttpMethod.POST,"/account/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT,"/account/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE,"/account/**").hasAuthority("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
