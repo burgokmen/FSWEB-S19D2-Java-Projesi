@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "member", schema = "fsweb")
+@Table(name = "member", schema = "test")
 public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,13 @@ public class Member implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "member_role", schema = "fsweb",
+    @JoinTable(name = "member_role", schema = "test",
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> authorities;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    List<Account> accounts;
 
 
     @Override
