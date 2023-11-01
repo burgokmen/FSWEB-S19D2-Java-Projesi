@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,6 +48,13 @@ public class Member implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void addAccount(Account account){
+        if (accounts == null){
+            accounts = new ArrayList<>();
+        }
+        accounts.add(account);
     }
 
     @Override
